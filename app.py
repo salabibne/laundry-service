@@ -89,7 +89,8 @@ def process_login():
 def dashboard():
     user_email = session.get("user_email")
     if user_email:
-        return f"Welcome! User Email: {user_email}"
+        return render_template('dashbord.html')
+        # return f"Welcome! User Email: {user_email}"
     else:
         return "Access denied. Please log in first."
         
