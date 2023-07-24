@@ -66,7 +66,7 @@ def process_login():
         # Check user credentials in the database
         try:
             cursor = conn.cursor()
-            sql = "SELECT email FROM customer WHERE email = %s AND password = %s"
+            sql = "SELECT email,user_type FROM customer WHERE email = %s AND password = %s"
             values = (email, password)
             cursor.execute(sql, values)
             user = cursor.fetchone()
@@ -75,8 +75,14 @@ def process_login():
 
             if user:
                 # User is authenticated, store email in session and redirect to the dashboard
-                session["user_email"] = email
-                return redirect(url_for("dashboard"))
+                session["user_email"] = user[0]
+                session["user_type"] = user[1]
+                if user[1] == "Delivery Man":
+                    return redirect(url_for("dashbord"))
+                elif user[1] == "Customer":
+                    return redirect(url_for("customer"))
+                else:
+                    return redirect(url_for("service"))
             else:
                 return "Invalid credentials. Please try again."
 
@@ -85,11 +91,29 @@ def process_login():
             return "Error occurred while processing login."
 
 # Route for the dashboard (a simple example of an authenticated page)
-@app.route("/dashboard")
-def dashboard():
+@app.route("/dashbord")
+def dashbord():
     user_email = session.get("user_email")
     if user_email:
         return render_template('dashbord.html')
+        # return f"Welcome! User Email: {user_email}"
+    else:
+        return "Access denied. Please log in first."
+    
+@app.route("/customer")
+def customer():
+    user_email = session.get("user_email")
+    if user_email:
+        return render_template('customer.html')
+        # return f"Welcome! User Email: {user_email}"
+    else:
+        return "Access denied. Please log in first."
+
+@app.route("/service")
+def service():
+    user_email = session.get("user_email")
+    if user_email:
+        return render_template('service.html')
         # return f"Welcome! User Email: {user_email}"
     else:
         return "Access denied. Please log in first."
