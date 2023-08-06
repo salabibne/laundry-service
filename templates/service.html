@@ -133,17 +133,18 @@
                   </tr>
               </thead>
               
-            <tbody>
-                {% for service in data %}
-                <tr>
-                  <!-- <td>{{ service[0] }}</td> 
-                  <td>{{ service[2] }}</td> 
-                  <td>{{ service[3] }}</td> 
-                  <td>{{ service[4] }}</td> 
-                  <td>{{ service[5] }}</td> 
-                  <td>{{ service[6] }}</td> -->
-                  <td>{{service[business_name]}}</td>
-                </tr>
+              <tbody>
+                {% for row in service_data %}
+                    <tr>
+                        <td>{{ row[0] }}</td>
+                        <td>{{ row[1] }}</td>
+                        <td>{{ row[2] }}</td>
+                        <td>{{ row[3] }}</td>
+                        <td>{{ row[4] }}</td>
+                        <td>{{ row[5] }}</td>
+                        <td>{{ row[6] }}</td>
+                        <td>{{ row[7] }}</td>
+                    </tr>
                 {% endfor %}
             </tbody>
             </table>

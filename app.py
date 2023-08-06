@@ -141,39 +141,58 @@ def customer():
 def service():
     user_email = session.get("user_email")
     if user_email:
-        return render_template('service.html')
-        # return f"Welcome! User Email: {user_email}"
+
+    #     return render_template('service.html')
+    #     # return f"Welcome! User Email: {user_email}"
+    # else:
+    #     return "Access denied. Please log in first."
+
+        if request.method == "POST":
+            email=session["user_email"]
+            business_name = request.form.get("business_name")
+            service_1 = request.form.get("service_1")
+            service_1_price = request.form.get("service_1_price")
+            service_2 = request.form.get("service_2")
+            service_2_price = request.form.get("service_2_price")
+            service_3 = request.form.get("service_3")
+            service_3_price = request.form.get("service_3_price")
+
+            # Create a new database connection
+            conn = create_db_connection()
+
+            # Insert user data into the database
+            
+            cursor = conn.cursor()
+            sql = "INSERT INTO service (business_name,service_1,service_1_price,service_2, service_2_price,service_3,service_3_price) VALUES (%s, %s, %s, %s,%s,%s,%s)"
+            values=(business_name,service_1,service_1_price,service_2,service_2_price,service_3,service_3_price)
+            cursor.execute(sql, values)
+            conn.commit()
+            cursor.close()
+            conn.close()
+        service_data=fetch_data_from_db()
+            
+        return render_template('service.html',service_data=service_data)
     else:
         return "Access denied. Please log in first."
-# 
-# @app.route("/service", methods=["GET","POST"])
-# def servicee():
-    # print("hello")
-    if request.method == "POST":
-        email=session["user_email"]
-        business_name = request.form.get("business_name")
-        service_1 = request.form.get("service_1")
-        service_1_price = request.form.get("service_1_price")
-        service_2 = request.form.get("service_2")
-        service_2_price = request.form.get("service_2_price")
-        service_3 = request.form.get("service_3")
-        service_3_price = request.form.get("service_3_price")
 
-        # Create a new database connection
-        conn = create_db_connection()
+#
 
-        # Insert user data into the database
-        
-        cursor = conn.cursor()
-        sql = "INSERT INTO service (business_name,service_1,service_1_price,service_2, service_2_price,service_3,service_3_price) VALUES (%s, %s, %s, %s,%s,%s,%s)"
-        values=(business_name,service_1,service_1_price,service_2,service_2_price,service_3,service_3_price)
-        cursor.execute(sql, values)
-        conn.commit()
+def fetch_data_from_db():
+    conn = create_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        # Fetch all data from the 'service' table
+        cursor.execute("SELECT * FROM service")
+        data = cursor.fetchall()
+
         cursor.close()
         conn.close()
-        temp=fetch_data_from_db()
-        print(temp)
-        return render_template('service.html')
+        return data
+
+    except mysql.connector.Error as error:
+        print("Error fetching data from the database:", error)
+        return None
 
 # 
 def create_db_connection():
@@ -211,21 +230,7 @@ def fetch_data_from_db():
         return None
 
 
-# Your other routes and functions...
 
-# @app.route("/service")
-# def display_service_data():
-#     users_data = fetch_data_from_db()
-
-#     if users_data:
-#         # Pass the fetched data to the template for rendering
-#         return render_template("service.html", users_data=users_data)
-#     else:
-#         return "Error fetching data from the database."
-
-
-# 
-# 
 if __name__ == "__main__":
     app.secret_key = "email"  # Replace with your secret key
     with app.app_context():
@@ -253,55 +258,5 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-# import mysql.connector
 
-# def create_db_connection():
-#     # Replace these with your actual database credentials
-#     config = {
-#         'host': 'localhost',
-#         'user': 'root',
-#         'password': '',
-#         'database': 'laundryservice',
-#         'auth_plugin': 'mysql_native_password'
-#     }
-
-#     conn = mysql.connector.connect(**config)
-#     return conn
-# def fetch_data_from_db():
-#     conn = create_db_connection()
-#     cursor = conn.cursor()
-
-#     try:
-#         # Example query to fetch all data from the 'users' table
-#         cursor.execute("SELECT * FROM service")
-#         data = cursor.fetchall()
-        
-
-       
-
-#         cursor.close()
-#         conn.close()
-
-#         return data
-#         # return redirect(url_for("display_service_data"))
-
-#     except mysql.connector.Error as error:
-#         print("Error fetching data from the database:", error)
-#         return None
-
-
-# # Your other routes and functions...
-
-# @app.route("/service")
-# def display_service_data():
-#     users_data = fetch_data_from_db()
-
-#     if users_data:
-#         # Pass the fetched data to the template for rendering
-#         return render_template("service.html", users_data=users_data)
-#     else:
-#         return "Error fetching data from the database."
-
-
-# # 
 
