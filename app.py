@@ -142,10 +142,7 @@ def service():
     user_email = session.get("user_email")
     if user_email:
 
-    #     return render_template('service.html')
-    #     # return f"Welcome! User Email: {user_email}"
-    # else:
-    #     return "Access denied. Please log in first."
+  
 
         if request.method == "POST":
             email=session["user_email"]
@@ -215,7 +212,7 @@ def fetch_data_from_db():
         # Example query to fetch all data from the 'users' table
         cursor.execute("SELECT * FROM service")
         data = cursor.fetchall()
-        print(data)
+        # print(data)
 
        
 
