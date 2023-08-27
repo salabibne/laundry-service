@@ -66,7 +66,7 @@ def signup():
                 login_user(new_user, remember=True)
                 print(f"\n\n ADMIN ADDED \n\n")
                 return redirect(url_for('views.index'))
-            if last_name.lower() == "provider":
+            elif last_name.lower() == "provider":
                 print("Creating Provider")
                 new_user = Provider(
                     nid = request.form.get('nid_number'),
