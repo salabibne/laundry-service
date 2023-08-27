@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+
+{% block navbaritem %}
+    {% if current_user.user_type == 'regular' %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('views.find_services')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Find Services
+            </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('views.checkout')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Checkout
+            </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('views.apply_discount')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Redeem Code
+            </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('views.order_history')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Order History
+            </span>
+            </a>
+        </li>
+    {% endif %}
+    {% if current_user.user_type == 'provider' %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('provider.manage_services')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Manage Services
+            </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('provider.add_new_service')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Add new Service
+            </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('provider.manage_orders')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Manage Orders
+            </span>
+            </a>
+        </li>
+    {% endif %}
+    {% if current_user.user_type == 'admin' %}
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('admin.manage_users')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Update Premium Status
+            </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('admin.edit_users')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Edit Users
+            </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('admin.coupons')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> Manage Coupons
+            </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('admin.new_coupon')}}">
+            <i class="bi bi-question-circle"></i>
+            <span> New coupon
+            </span>
+            </a>
+        </li>
+        
+    {% endif %}    
+{% endblock navbaritem %}
+
+
+
+{% block mainbody %}
+    
+    
+    {% block adminbody %}
+    {% endblock adminbody %}
+
+    {% block providerbody %}
+    {% endblock providerbody %}
+
+    {% block regularbody %}
+
+        <style>
+            .card-1 {
+                background-color: #0c9ae8;
+                color: #fff;
+            }
+            .card-2 {
+                background-color: #e8950c;
+                color: #fff;
+            }
+            .card-3 {
+                background-color:#b169cb ;
+                color: #fff;
+            }
+            .card-4 {
+                background-color: #0ed58f;
+                color: #fff;
+            }
+            .titled{
+                font-size: 25px;
+                
+            }
+
+            .textd{
+                font-size: 22px;
+            }
+
+        </style>
+        <section class="section">
+    <div class="row">
+        <div class="col-md-6 col-lg-3">
+            <div class="card card-1">
+                <div class="card-body">
+                    <h5 class="card-title titled">User Balance</h5>
+                    <p class="card-text textd">{{current_user.balance}} BDT</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card card-2">
+                <div class="card-body">
+                    <h5 class="card-title titled">Location</h5>
+                    <p class="card-text textd">{{current_user.location}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card card-3">
+                <div class="card-body">
+                    <h5 class="card-title titled">Premium Status</h5>
+                    <p class="card-text textd">
+                        <span id="premium-status"></span>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h5 class="card-title titled">Email</h5>
+                    <p class="card-text textd">{{current_user.email}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    // Assuming you have a way to access the current_user object
+    // and retrieve the premium_status value from it
+    const current_user = {
+        premium_status: 1 // Replace this with the actual value from the database
+    };
+
+    // Get the element where you want to display the true/false value
+    const premiumStatusElement = document.getElementById("premium-status");
+
+    // Set the text content based on the premium_status value
+    if (current_user.premium_status === 1) {
+        premiumStatusElement.textContent = "True";
+    } else {
+        premiumStatusElement.textContent = "False";
+    }
+</script>
+
+    {% endblock regularbody %}
+    
+{% endblock mainbody %}
+
