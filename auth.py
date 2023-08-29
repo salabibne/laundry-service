@@ -144,7 +144,9 @@ def login():
 def logout():
     print("Logout")
     logout_user()
+    # print("user logout")
     return redirect(url_for('auth.login'))
+
     
     
     
