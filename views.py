@@ -183,7 +183,3 @@ def order_history():
         print(f"Rating: {rating} | Rating_Count: {rating_count}")
 
     return render_template('order-history.html', orders=user_orders)
-
-@views.route('/index', methods=['GET', 'POST'])
-def index2():
-    return redirect(url_for('views.index'))
